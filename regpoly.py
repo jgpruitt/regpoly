@@ -2,6 +2,19 @@
 
 import math
 
+TRIANGLE = 3
+SQUARE = 4
+PENTAGON = 5
+HEXAGON = 6
+HEPTAGON = 7
+OCTAGON = 8
+NONAGON = 9
+DECAGON = 10
+HENDECAGON = 11
+DODECAGON = 12
+TRIDECAGON = 13
+TETRADECAGON = 14
+
 
 class RegularPolygon:
 
@@ -12,12 +25,6 @@ class RegularPolygon:
     circumradius: float
     inradius: float
     side_length: float
-
-    def __init__(self, nbr_sides, center_x=0.0, center_y=0.0, rotation=0.0):
-        self.nbr_sides = nbr_sides
-        self.center_x = center_x
-        self.center_y = center_y
-        self.rotation = rotation
 
     def center(self):
         return self.center_x, self.center_y
@@ -43,109 +50,71 @@ class RegularPolygon:
     def side_midpoints(self):
         v = self.vertices()
         m = []
-        
-
-    @staticmethod
-    def side_length_from_inradius(nbr_sides, inradius):
-        return 2.0 * inradius * math.tan(math.pi / nbr_sides)
-
-    @staticmethod
-    def side_length_from_circumradius(nbr_sides, circumradius):
-        return 2.0 * circumradius * math.sin(math.pi / nbr_sides)
-
-    @staticmethod
-    def inradius_from_side_length(nbr_sides, side_length):
-        return 0.5 * side_length / math.tan(math.pi / nbr_sides)
-
-    @staticmethod
-    def inradius_from_circumradius(nbr_sides, circumradius):
-        return circumradius * math.cos(math.pi / nbr_sides)
-
-    @staticmethod
-    def circumradius_from_side_length(nbr_sides, side_length):
-        return 0.5 * side_length / math.sin(math.pi / nbr_sides)
-
-    @staticmethod
-    def circumradius_from_inradius(nbr_sides, inradius):
-        return inradius / math.cos(math.pi / nbr_sides)
-
-    @staticmethod
-    def from_side_length(clss, side_length, center_x=0.0, center_y=0.0, rotation=0.0):
-        poly = clss(center_x=center_x, center_y=center_y, rotation=rotation)
-        poly.side_length = side_length
-        poly.inradius = RegularPolygon.inradius_from_side_length(poly.nbr_sides, side_length)
-        poly.circumradius = RegularPolygon.circumradius_from_side_length(poly.nbr_sides, side_length)
-        return poly
-
-    @staticmethod
-    def from_inradius(clss, inradius, center_x=0.0, center_y=0.0, rotation=0.0):
-        poly = clss(center_x=center_x, center_y=center_y, rotation=rotation)
-        poly.inradius = inradius
-        poly.side_length = RegularPolygon.side_length_from_inradius(poly.nbr_sides, inradius)
-        poly.circumradius = RegularPolygon.circumradius_from_inradius(poly.nbr_sides, inradius)
-        return poly
-
-    @staticmethod
-    def from_circumradius(clss, circumradius, center_x=0.0, center_y=0.0, rotation=0.0):
-        poly = clss(center_x=center_x, center_y=center_y, rotation=rotation)
-        poly.circumradius = circumradius
-        poly.side_length = RegularPolygon.side_length_from_circumradius(poly.nbr_sides, circumradius)
-        poly.inradius = RegularPolygon.inradius_from_circumradius(poly.nbr_sides, circumradius)
-        return poly
+        midpoint = (lambda x1, x2: 0.5 * (x1 + x2))
+        for i in range(self.nbr_sides):
+            p1 = v[i]
+            p2 = v[i+1] if i+1 < self.nbr_sides else v[0]
+            x = midpoint(p1[0], p2[0])
+            y = midpoint(p1[1], p2[1])
+            m.append((x, y))
+        return m
 
 
-class Triangle(RegularPolygon):
-
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Triangle, self).__init__(nbr_sides=3, center_x=center_x, center_y=center_y, rotation=rotation)
+def side_length_from_inradius(nbr_sides, inradius):
+    return 2.0 * inradius * math.tan(math.pi / nbr_sides)
 
 
-class Square(RegularPolygon):
-
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Square, self).__init__(nbr_sides=4, center_x=center_x, center_y=center_y, rotation=rotation)
+def side_length_from_circumradius(nbr_sides, circumradius):
+    return 2.0 * circumradius * math.sin(math.pi / nbr_sides)
 
 
-class Pentagon(RegularPolygon):
-    
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Pentagon, self).__init__(nbr_sides=5, center_x=center_x, center_y=center_y, rotation=rotation)
+def inradius_from_side_length(nbr_sides, side_length):
+    return 0.5 * side_length / math.tan(math.pi / nbr_sides)
 
 
-class Hexagon(RegularPolygon):
-
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Hexagon, self).__init__(nbr_sides=6, center_x=center_x, center_y=center_y, rotation=rotation)
+def inradius_from_circumradius(nbr_sides, circumradius):
+    return circumradius * math.cos(math.pi / nbr_sides)
 
 
-class Heptagon(RegularPolygon):
-
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Heptagon, self).__init__(nbr_sides=7, center_x=center_x, center_y=center_y, rotation=rotation)
+def circumradius_from_side_length(nbr_sides, side_length):
+    return 0.5 * side_length / math.sin(math.pi / nbr_sides)
 
 
-class Octagon(RegularPolygon):
-
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Octagon, self).__init__(nbr_sides=8, center_x=center_x, center_y=center_y, rotation=rotation)
+def circumradius_from_inradius(nbr_sides, inradius):
+    return inradius / math.cos(math.pi / nbr_sides)
 
 
-class Nonagon(RegularPolygon):
+def from_side_length(nbr_sides, side_length, center_x=0.0, center_y=0.0, rotation=0.0):
+    poly = RegularPolygon()
+    poly.nbr_sides = nbr_sides
+    poly.center_x = center_x
+    poly.center_y = center_y
+    poly.rotation = rotation
+    poly.side_length = side_length
+    poly.inradius = inradius_from_side_length(poly.nbr_sides, side_length)
+    poly.circumradius = circumradius_from_side_length(poly.nbr_sides, side_length)
+    return poly
 
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Nonagon, self).__init__(nbr_sides=9, center_x=center_x, center_y=center_y, rotation=rotation)
+
+def from_inradius(nbr_sides, inradius, center_x=0.0, center_y=0.0, rotation=0.0):
+    poly = RegularPolygon()
+    poly.nbr_sides = nbr_sides
+    poly.center_x = center_x
+    poly.center_y = center_y
+    poly.rotation = rotation
+    poly.inradius = inradius
+    poly.side_length = side_length_from_inradius(poly.nbr_sides, inradius)
+    poly.circumradius = circumradius_from_inradius(poly.nbr_sides, inradius)
+    return poly
 
 
-class Decagon(RegularPolygon):
-
-    def __init__(self, center_x=0.0, center_y=0.0, rotation=0.0):
-        super(Decagon, self).__init__(nbr_sides=10, center_x=center_x, center_y=center_y, rotation=rotation)
-        
-
-if __name__ == '__main__':
-    tri = RegularPolygon.from_side_length(Triangle, 1)
-    print(tri)
-    print(tri.vertices())
-
-    hex = RegularPolygon.from_side_length(Hexagon, 1)
-    print(hex.vertices())
+def from_circumradius(nbr_sides, circumradius, center_x=0.0, center_y=0.0, rotation=0.0):
+    poly = RegularPolygon()
+    poly.nbr_sides = nbr_sides
+    poly.center_x = center_x
+    poly.center_y = center_y
+    poly.rotation = rotation
+    poly.circumradius = circumradius
+    poly.side_length = side_length_from_circumradius(poly.nbr_sides, circumradius)
+    poly.inradius = inradius_from_circumradius(poly.nbr_sides, circumradius)
+    return poly
