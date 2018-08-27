@@ -59,62 +59,62 @@ class RegularPolygon:
             m.append((x, y))
         return m
 
+    @staticmethod
+    def side_length_from_inradius(nbr_sides, inradius):
+        return 2.0 * inradius * math.tan(math.pi / nbr_sides)
 
-def side_length_from_inradius(nbr_sides, inradius):
-    return 2.0 * inradius * math.tan(math.pi / nbr_sides)
+    @staticmethod
+    def side_length_from_circumradius(nbr_sides, circumradius):
+        return 2.0 * circumradius * math.sin(math.pi / nbr_sides)
 
+    @staticmethod
+    def inradius_from_side_length(nbr_sides, side_length):
+        return 0.5 * side_length / math.tan(math.pi / nbr_sides)
 
-def side_length_from_circumradius(nbr_sides, circumradius):
-    return 2.0 * circumradius * math.sin(math.pi / nbr_sides)
+    @staticmethod
+    def inradius_from_circumradius(nbr_sides, circumradius):
+        return circumradius * math.cos(math.pi / nbr_sides)
 
+    @staticmethod
+    def circumradius_from_side_length(nbr_sides, side_length):
+        return 0.5 * side_length / math.sin(math.pi / nbr_sides)
 
-def inradius_from_side_length(nbr_sides, side_length):
-    return 0.5 * side_length / math.tan(math.pi / nbr_sides)
+    @staticmethod
+    def circumradius_from_inradius(nbr_sides, inradius):
+        return inradius / math.cos(math.pi / nbr_sides)
 
+    @staticmethod
+    def from_side_length(nbr_sides, side_length, center_x=0.0, center_y=0.0, rotation=0.0):
+        poly = RegularPolygon()
+        poly.nbr_sides = nbr_sides
+        poly.center_x = center_x
+        poly.center_y = center_y
+        poly.rotation = rotation
+        poly.side_length = side_length
+        poly.inradius = RegularPolygon.inradius_from_side_length(poly.nbr_sides, side_length)
+        poly.circumradius = RegularPolygon.circumradius_from_side_length(poly.nbr_sides, side_length)
+        return poly
 
-def inradius_from_circumradius(nbr_sides, circumradius):
-    return circumradius * math.cos(math.pi / nbr_sides)
+    @staticmethod
+    def from_inradius(nbr_sides, inradius, center_x=0.0, center_y=0.0, rotation=0.0):
+        poly = RegularPolygon()
+        poly.nbr_sides = nbr_sides
+        poly.center_x = center_x
+        poly.center_y = center_y
+        poly.rotation = rotation
+        poly.inradius = inradius
+        poly.side_length = RegularPolygon.side_length_from_inradius(poly.nbr_sides, inradius)
+        poly.circumradius = RegularPolygon.circumradius_from_inradius(poly.nbr_sides, inradius)
+        return poly
 
-
-def circumradius_from_side_length(nbr_sides, side_length):
-    return 0.5 * side_length / math.sin(math.pi / nbr_sides)
-
-
-def circumradius_from_inradius(nbr_sides, inradius):
-    return inradius / math.cos(math.pi / nbr_sides)
-
-
-def from_side_length(nbr_sides, side_length, center_x=0.0, center_y=0.0, rotation=0.0):
-    poly = RegularPolygon()
-    poly.nbr_sides = nbr_sides
-    poly.center_x = center_x
-    poly.center_y = center_y
-    poly.rotation = rotation
-    poly.side_length = side_length
-    poly.inradius = inradius_from_side_length(poly.nbr_sides, side_length)
-    poly.circumradius = circumradius_from_side_length(poly.nbr_sides, side_length)
-    return poly
-
-
-def from_inradius(nbr_sides, inradius, center_x=0.0, center_y=0.0, rotation=0.0):
-    poly = RegularPolygon()
-    poly.nbr_sides = nbr_sides
-    poly.center_x = center_x
-    poly.center_y = center_y
-    poly.rotation = rotation
-    poly.inradius = inradius
-    poly.side_length = side_length_from_inradius(poly.nbr_sides, inradius)
-    poly.circumradius = circumradius_from_inradius(poly.nbr_sides, inradius)
-    return poly
-
-
-def from_circumradius(nbr_sides, circumradius, center_x=0.0, center_y=0.0, rotation=0.0):
-    poly = RegularPolygon()
-    poly.nbr_sides = nbr_sides
-    poly.center_x = center_x
-    poly.center_y = center_y
-    poly.rotation = rotation
-    poly.circumradius = circumradius
-    poly.side_length = side_length_from_circumradius(poly.nbr_sides, circumradius)
-    poly.inradius = inradius_from_circumradius(poly.nbr_sides, circumradius)
-    return poly
+    @staticmethod
+    def from_circumradius(nbr_sides, circumradius, center_x=0.0, center_y=0.0, rotation=0.0):
+        poly = RegularPolygon()
+        poly.nbr_sides = nbr_sides
+        poly.center_x = center_x
+        poly.center_y = center_y
+        poly.rotation = rotation
+        poly.circumradius = circumradius
+        poly.side_length = RegularPolygon.side_length_from_circumradius(poly.nbr_sides, circumradius)
+        poly.inradius = RegularPolygon.inradius_from_circumradius(poly.nbr_sides, circumradius)
+        return poly
