@@ -49,8 +49,8 @@ for p in range(NBR_POLYGONS):
         rotation = r * (0.25 * math.pi)
         poly = RegularPolygon.from_circumradius(nbr_sides, CIRCUMRADIUS, center_x=center_x, center_y=center_y, rotation=rotation)
         draw_poly(poly, ctx)
-        # draw_circle(poly.center_x, poly.center_y, poly.circumradius, ctx)
-        # draw_circle(poly.center_x, poly.center_y, poly.inradius, ctx)
+        draw_circle(poly.center_x, poly.center_y, poly.circumradius, ctx)
+        draw_circle(poly.center_x, poly.center_y, poly.inradius, ctx)
 
 
 surface.write_to_png("test.png")
